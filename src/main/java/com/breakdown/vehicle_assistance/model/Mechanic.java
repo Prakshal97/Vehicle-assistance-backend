@@ -18,4 +18,5 @@ public class Mechanic {
     private GeoJsonPoint location;
 
     private String serviceType;
+    private boolean approved = false;
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+
 @CrossOrigin(origins = "http://localhost:8080")
 @RestController
 @RequestMapping("/mechanics")
@@ -23,12 +24,17 @@ public class MechanicController {
     public List<Mechanic> getAllMechanics(){
         return mechanicService.getAllMechanics();
     }
-    @GetMapping("/nearby")
-public List<Mechanic> findNearby(@RequestParam double lat,
-                                 @RequestParam double lng){
 
-    return mechanicService.findNearby(lat,lng);
-}
+    @GetMapping("/approved")
+    public List<Mechanic> getApprovedMechanics(){
+        return mechanicService.getApprovedMechanics();
+    }
+
+    @GetMapping("/nearby")
+    public List<Mechanic> findNearby(@RequestParam double lat,
+                                     @RequestParam double lng){
+        return mechanicService.findNearby(lat,lng);
+    }
 
     @PutMapping("/{id}")
     public Mechanic updateMechanic(@PathVariable String id, @RequestBody Mechanic mechanic){
@@ -38,6 +44,11 @@ public List<Mechanic> findNearby(@RequestParam double lat,
     @DeleteMapping("/{id}")
     public void deleteMechanic(@PathVariable String id){
         mechanicService.deleteMechanic(id);
+    }
+
+    @PostMapping("/{id}/approve")
+    public Mechanic approveMechanic(@PathVariable String id){
+        return mechanicService.approveMechanic(id);
     }
 
 }

@@ -11,6 +11,7 @@ import org.springframework.data.geo.Distance;
 import org.springframework.data.geo.Metrics;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class MechanicService {
@@ -18,23 +19,32 @@ public class MechanicService {
     @Autowired
     private MechanicRepository mechanicRepository;
 
-    // add mechanic
+    // add mechanic (default to unapproved)
     public Mechanic addMechanic(Mechanic mechanic){
+        mechanic.setApproved(false);
         return mechanicRepository.save(mechanic);
     }
 
-    // get all mechanics
+    // get all mechanics (for admin)
     public List<Mechanic> getAllMechanics(){
         return mechanicRepository.findAll();
     }
 
-    // find nearby mechanics
-    public List<Mechanic> findNearby(double lat, double lng) {
+    // get only approved mechanics (for users)
+    public List<Mechanic> getApprovedMechanics(){
+        return mechanicRepository.findAll().stream()
+                .filter(Mechanic::isApproved)
+                .collect(Collectors.toList());
+    }
 
+    // find nearby approved mechanics
+    public List<Mechanic> findNearby(double lat, double lng) {
         GeoJsonPoint point = new GeoJsonPoint(lng, lat);
         Distance distance = new Distance(50, Metrics.KILOMETERS);
 
-        return mechanicRepository.findByLocationNear(point, distance);
+        return mechanicRepository.findByLocationNear(point, distance).stream()
+                .filter(Mechanic::isApproved)
+                .collect(Collectors.toList());
     }
 
     // update mechanic
@@ -55,6 +65,14 @@ public class MechanicService {
     // delete mechanic
     public void deleteMechanic(String id) {
         mechanicRepository.deleteById(id);
+    }
+
+    // approve mechanic
+    public Mechanic approveMechanic(String id) {
+        Mechanic mechanic = mechanicRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mechanic not found with id: " + id));
+        mechanic.setApproved(true);
+        return mechanicRepository.save(mechanic);
     }
     
 }
