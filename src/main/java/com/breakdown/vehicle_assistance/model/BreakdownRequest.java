@@ -12,11 +12,12 @@ public class BreakdownRequest {
     private String id;
 
     private String userId;
+    private String mechanicId; // Added mechanicId
     private String vehicleType;
     private String problemDescription;
 
     private double latitude;
     private double longitude;
 
-    private String status;
+    private String status; // Pending, Accepted, Completed, Rejected
 }
