@@ -30,4 +30,14 @@ public List<Mechanic> findNearby(@RequestParam double lat,
     return mechanicService.findNearby(lat,lng);
 }
 
+    @PutMapping("/{id}")
+    public Mechanic updateMechanic(@PathVariable String id, @RequestBody Mechanic mechanic){
+        return mechanicService.updateMechanic(id, mechanic);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deleteMechanic(@PathVariable String id){
+        mechanicService.deleteMechanic(id);
+    }
+
 }

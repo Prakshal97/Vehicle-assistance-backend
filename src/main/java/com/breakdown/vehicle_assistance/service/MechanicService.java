@@ -36,5 +36,25 @@ public class MechanicService {
 
         return mechanicRepository.findByLocationNear(point, distance);
     }
+
+    // update mechanic
+    public Mechanic updateMechanic(String id, Mechanic mechanicDetails) {
+        Mechanic mechanic = mechanicRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Mechanic not found with id: " + id));
+        
+        mechanic.setName(mechanicDetails.getName());
+        mechanic.setPhone(mechanicDetails.getPhone());
+        mechanic.setServiceType(mechanicDetails.getServiceType());
+        if (mechanicDetails.getLocation() != null) {
+            mechanic.setLocation(mechanicDetails.getLocation());
+        }
+        
+        return mechanicRepository.save(mechanic);
+    }
+
+    // delete mechanic
+    public void deleteMechanic(String id) {
+        mechanicRepository.deleteById(id);
+    }
     
 }
