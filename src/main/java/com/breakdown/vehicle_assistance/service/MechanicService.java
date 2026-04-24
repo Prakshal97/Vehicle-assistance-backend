@@ -52,9 +52,9 @@ public class MechanicService {
         Mechanic mechanic = mechanicRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Mechanic not found with id: " + id));
         
-        mechanic.setName(mechanicDetails.getName());
-        mechanic.setPhone(mechanicDetails.getPhone());
-        mechanic.setServiceType(mechanicDetails.getServiceType());
+        if (mechanicDetails.getName() != null) mechanic.setName(mechanicDetails.getName());
+        if (mechanicDetails.getPhone() != null) mechanic.setPhone(mechanicDetails.getPhone());
+        if (mechanicDetails.getServiceType() != null) mechanic.setServiceType(mechanicDetails.getServiceType());
         if (mechanicDetails.getLocation() != null) {
             mechanic.setLocation(mechanicDetails.getLocation());
         }
